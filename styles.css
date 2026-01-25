@@ -46,22 +46,10 @@ body::before {
 }
 
 body::after {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 72px;
-  background-image: radial-gradient(circle at 20% 60%, rgba(107, 123, 58, 0.35) 0 26%, transparent 28%),
-    radial-gradient(circle at 80% 60%, rgba(212, 175, 55, 0.4) 0 26%, transparent 28%);
-  background-size: 120px 72px;
-  background-repeat: repeat-x;
-  opacity: 0.45;
-  pointer-events: none;
-  z-index: 0;
+  content: none;
 }
 
-body > * {
+body>* {
   position: relative;
   z-index: 1;
 }
@@ -258,7 +246,7 @@ h3 {
 main {
   display: grid;
   gap: 5rem;
-  padding: 4rem 1.5rem 6rem;
+  padding: 0 1.5rem 6rem;
 }
 
 .section-title {
@@ -273,14 +261,19 @@ main {
   gap: 2.4rem;
 }
 
+.story-layout--stacked {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 .section-divider {
-  width: 100%;
+  width: 100vw;
   height: clamp(90px, 14vw, 150px);
   background-image: url("assets/section_divider.png");
-  background-size: cover;
-  background-position: center top;
-  background-repeat: no-repeat;
-  margin: 0 auto 2rem;
+  background-size: auto 100%;
+  background-position: left top;
+  background-repeat: repeat-x;
+  margin: 0 0 2rem;
+  margin-left: calc(50% - 50vw);
 }
 
 .section-kicker {
@@ -294,6 +287,144 @@ main {
 .section-heading {
   font-size: clamp(1.9rem, 5.2vw, 3.2rem);
   color: var(--ink);
+}
+
+.scratch-feature {
+  display: grid;
+  gap: 1.6rem;
+  justify-items: center;
+  text-align: center;
+  width: 100%;
+}
+
+.scratch-header {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.scratch-title {
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  letter-spacing: 0.16em;
+}
+
+.scratch-instruction {
+  text-transform: uppercase;
+  letter-spacing: 0.32em;
+  font-size: 0.62rem;
+  font-weight: 600;
+  color: var(--olive);
+}
+
+.scratch-card {
+  position: relative;
+  width: 100%;
+  height: clamp(240px, 34vw, 380px);
+  border-radius: 18px;
+  border: none;
+  overflow: hidden;
+  background: #fffaf2;
+  box-shadow: var(--shadow);
+  isolation: isolate;
+}
+
+.scratch-reveal {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-image: url("assets/reveal_layer.png");
+  background-size: cover;
+  background-position: center 72%;
+  display: grid;
+  place-items: center;
+  z-index: 1;
+}
+
+.scratch-reveal::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(253, 251, 247, 0.82);
+}
+
+.scratch-text {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 1rem;
+  padding: 1.6rem;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.scratch-date {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  padding: 0.4rem 1.3rem;
+  border-radius: 999px;
+  border: 1px solid rgba(212, 175, 55, 0.55);
+  background: rgba(253, 251, 247, 0.9);
+  font-size: 1.05rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: rgba(74, 4, 4, 0.7);
+}
+
+.scratch-event {
+  display: grid;
+  gap: 0.35rem;
+  align-items: center;
+  text-align: center;
+}
+
+.scratch-label {
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(1.15rem, 3.4vw, 1.5rem);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: rgba(74, 4, 4, 0.82);
+}
+
+.scratch-time {
+  font-family: "Sora", sans-serif;
+  font-size: clamp(1.8rem, 5.2vw, 2.6rem);
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  text-transform: uppercase;
+}
+
+.scratch-divider {
+  height: 1px;
+  width: min(70%, 360px);
+  margin: 0.2rem auto;
+  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.7), transparent);
+}
+
+.scratch-canvas {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  touch-action: none;
+  transition: opacity 0.8s ease;
+  z-index: 2;
+}
+
+.scratch-card.is-cleared .scratch-canvas {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.scratch-card.is-scratching .scratch-text,
+.scratch-card.is-cleared .scratch-text {
+  opacity: 1;
 }
 
 .timeline {
@@ -423,8 +554,8 @@ main {
   border: 1px solid rgba(212, 175, 55, 0.2);
   box-shadow: 0 14px 28px rgba(74, 4, 4, 0.12);
   background: #fff;
-  aspect-ratio: 4 / 3;
-  min-height: 220px;
+  aspect-ratio: 21 / 9;
+  min-height: 120px;
 }
 
 .venue-map iframe {
@@ -601,9 +732,11 @@ main {
   0% {
     opacity: 0.4;
   }
+
   50% {
     opacity: 1;
   }
+
   100% {
     opacity: 0.4;
   }
@@ -614,6 +747,7 @@ main {
     opacity: 0;
     transform: translateY(24px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -624,6 +758,7 @@ main {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -639,11 +774,16 @@ main {
   }
 
   main {
-    padding: 5rem 10vw 6rem;
+    padding: 0 10vw 6rem;
   }
 
   .section-title {
     text-align: left;
+  }
+
+  .story .section-title {
+    text-align: center;
+    justify-items: center;
   }
 
   .rsvp-form {
@@ -653,7 +793,6 @@ main {
 
 @media (min-width: 960px) {
   .story-layout {
-    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
     align-items: start;
   }
 }
@@ -690,6 +829,24 @@ main {
     width: 76px;
     height: 76px;
     font-size: 1.05rem;
+  }
+
+  .scratch-title {
+    letter-spacing: 0.12em;
+  }
+
+  .scratch-date {
+    font-size: 0.92rem;
+    letter-spacing: 0.18em;
+  }
+
+  .scratch-label {
+    letter-spacing: 0.1em;
+    font-size: 1.02rem;
+  }
+
+  .scratch-time {
+    letter-spacing: 0.04em;
   }
 }
 

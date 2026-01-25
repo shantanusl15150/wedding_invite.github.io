@@ -24,19 +24,8 @@
 
     <header class="hero" id="top">
       <div class="hero-overlay"></div>
-      <div class="hero-content">
-        <p class="hero-tag">With joy in our hearts</p>
-        <div class="save-the-date" aria-hidden="true">
-          <span>Save</span>
-          <span>the</span>
-          <span>Date</span>
-        </div>
-        <a class="primary-cta" href="#rsvp">RSVP Now</a>
-      </div>
-      <div class="hero-monogram" aria-hidden="true">A & A</div>
       <div class="hero-ribbon">
         <h1 class="hero-names">Anudeep & Achuta</h1>
-        <p class="hero-date">Wed, 25 Feb 2026 · Visakhapatnam</p>
       </div>
     </header>
 
@@ -44,25 +33,31 @@
       <section class="story" id="story">
         <div class="section-divider" aria-hidden="true"></div>
         <div class="section-title">
-          <p class="section-kicker">Our Journey</p>
           <h2 class="section-heading">A day of traditions and togetherness</h2>
         </div>
-        <div class="story-layout">
-          <div class="timeline">
-            <article class="timeline-item reveal">
-              <div class="timeline-card">
-                <p class="timeline-label">Reception</p>
-                <h3>An evening of blessings</h3>
-                <p class="timeline-meta">Wed, 25 Feb 2026 · 7:00 PM</p>
+        <div class="story-layout story-layout--stacked">
+          <div class="scratch-feature reveal">
+            <div class="scratch-header">
+              <h3 class="scratch-title">The Sacred Muhurtham</h3>
+              <p class="scratch-instruction">Gently scratch to reveal</p>
+            </div>
+            <div class="scratch-card" id="scratch-card">
+              <div class="scratch-reveal">
+                <div class="scratch-text">
+                  <p class="scratch-date">Wednesday · 25 Feb 2026</p>
+                  <div class="scratch-event">
+                    <p class="scratch-label">Wedding Muhurtham</p>
+                    <p class="scratch-time">11:08 PM</p>
+                  </div>
+                  <span class="scratch-divider" aria-hidden="true"></span>
+                  <div class="scratch-event">
+                    <p class="scratch-label">Reception</p>
+                    <p class="scratch-time">7:00 PM</p>
+                  </div>
+                </div>
               </div>
-            </article>
-            <article class="timeline-item reveal">
-              <div class="timeline-card">
-                <p class="timeline-label">Wedding</p>
-                <h3>Muhurtham</h3>
-                <p class="timeline-meta">Wed, 25 Feb 2026 · 11:08 PM</p>
-              </div>
-            </article>
+              <canvas class="scratch-canvas" id="scratch-canvas" aria-hidden="true"></canvas>
+            </div>
           </div>
           <aside class="venue-panel reveal">
             <p class="venue-kicker">Venue</p>
@@ -185,6 +180,7 @@
       <a class="ghost-cta" href="#top">Back to top</a>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <script src="script.js"></script>
   </body>
 </html>

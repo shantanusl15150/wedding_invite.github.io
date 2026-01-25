@@ -124,9 +124,289 @@ const initAutoPlay = () => {
   window.addEventListener("keydown", unlockAudio, { once: true });
 };
 
+const initScratchCard = () => {
+  const card = document.getElementById("scratch-card");
+  const canvas = document.getElementById("scratch-canvas");
+  if (!card || !canvas) return;
+
+  const context = canvas.getContext("2d");
+  if (!context) return;
+
+  const coverImage = new Image();
+
+  let isDrawing = false;
+  let isCleared = false;
+  let lastPoint = null;
+  let canvasWidth = 0;
+  let canvasHeight = 0;
+  let brushRadius = 18;
+  let lastCheck = 0;
+  const confettiThreshold = 0.3;
+  const clearThreshold = 0.4;
+  let scratchedArea = 0;
+  let confettiFired = false;
+
+  const drawCover = () => {
+    context.globalCompositeOperation = "source-over";
+    context.globalAlpha = 1;
+    context.clearRect(0, 0, canvasWidth, canvasHeight);
+
+    const gradient = context.createLinearGradient(0, 0, canvasWidth, canvasHeight);
+    gradient.addColorStop(0, "#d8a247");
+    gradient.addColorStop(0.5, "#b85a2b");
+    gradient.addColorStop(1, "#d4af37");
+    context.fillStyle = gradient;
+    context.fillRect(0, 0, canvasWidth, canvasHeight);
+
+    if (coverImage.complete && coverImage.naturalWidth > 0) {
+      context.drawImage(coverImage, 0, 0, canvasWidth, canvasHeight);
+    }
+  };
+
+  const resizeCanvas = () => {
+    const rect = card.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+
+    const ratio = window.devicePixelRatio || 1;
+    canvasWidth = rect.width;
+    canvasHeight = rect.height;
+    canvas.width = Math.floor(rect.width * ratio);
+    canvas.height = Math.floor(rect.height * ratio);
+    context.setTransform(ratio, 0, 0, ratio, 0, 0);
+    brushRadius = Math.max(14, Math.min(canvasWidth, canvasHeight) * 0.06);
+    scratchedArea = 0;
+    drawCover();
+  };
+
+  const getPoint = (clientX, clientY) => {
+    const rect = canvas.getBoundingClientRect();
+    return {
+      x: clientX - rect.left,
+      y: clientY - rect.top,
+    };
+  };
+
+  const scratchTo = (point) => {
+    context.globalCompositeOperation = "destination-out";
+    context.lineCap = "round";
+    context.lineJoin = "round";
+    context.lineWidth = brushRadius * 2;
+    if (!lastPoint) {
+      context.beginPath();
+      context.arc(point.x, point.y, brushRadius, 0, Math.PI * 2);
+      context.fill();
+      scratchedArea += Math.PI * brushRadius * brushRadius;
+      lastPoint = point;
+      return;
+    }
+
+    context.beginPath();
+    context.moveTo(lastPoint.x, lastPoint.y);
+    context.lineTo(point.x, point.y);
+    context.stroke();
+    const distance = Math.hypot(point.x - lastPoint.x, point.y - lastPoint.y);
+    scratchedArea += distance * brushRadius * 2;
+    lastPoint = point;
+  };
+
+  const getScratchedPercent = () => {
+    try {
+      const width = canvas.width;
+      const height = canvas.height;
+      const pixels = context.getImageData(0, 0, width, height).data;
+      const gap = 10;
+      let cleared = 0;
+      let total = 0;
+
+      for (let y = 0; y < height; y += gap) {
+        for (let x = 0; x < width; x += gap) {
+          const alpha = pixels[(y * width + x) * 4 + 3];
+          total += 1;
+          if (alpha < 32) {
+            cleared += 1;
+          }
+        }
+      }
+
+      return total ? cleared / total : 0;
+    } catch (err) {
+      const totalArea = canvasWidth * canvasHeight || 1;
+      return Math.min(scratchedArea / totalArea, 1);
+    }
+  };
+
+  let rainInterval = null;
+  let rainTimeout = null;
+
+  const stopFlowerRain = () => {
+    if (rainInterval) {
+      window.clearInterval(rainInterval);
+      rainInterval = null;
+    }
+    if (rainTimeout) {
+      window.clearTimeout(rainTimeout);
+      rainTimeout = null;
+    }
+  };
+
+  const startFlowerRain = () => {
+    if (typeof window.confetti !== "function") return;
+    if (rainInterval) return;
+
+    const marigoldPalette = ["#f2a900", "#f5b031", "#e18a00", "#d77b00"];
+    const petalShape =
+      typeof window.confetti.shapeFromPath === "function"
+        ? window.confetti.shapeFromPath({
+            path: "M12 2C17 6 20 12 12 22C4 12 7 6 12 2Z",
+          })
+        : "circle";
+
+    const emitPetals = () => {
+      const bursts = 7;
+      for (let i = 0; i < bursts; i += 1) {
+        window.confetti({
+          particleCount: 18,
+          angle: 90,
+          spread: 60,
+          startVelocity: 6,
+          gravity: 0.8,
+          ticks: 720,
+          colors: marigoldPalette,
+          shapes: [petalShape],
+          scalar: 2.4,
+          origin: { x: Math.random(), y: -0.1 },
+        });
+      }
+    };
+
+    emitPetals();
+    rainInterval = window.setInterval(emitPetals, 200);
+    rainTimeout = window.setTimeout(stopFlowerRain, 5000);
+  };
+
+  const checkScratchProgress = (force = false) => {
+    if (isCleared) return;
+    const now = Date.now();
+    if (!force && now - lastCheck < 250) return;
+    lastCheck = now;
+    const percent = getScratchedPercent();
+    if (!confettiFired && percent >= confettiThreshold) {
+      confettiFired = true;
+      startFlowerRain();
+    }
+    if (percent >= clearThreshold) {
+      isCleared = true;
+      card.classList.add("is-cleared");
+      if (!confettiFired) {
+        confettiFired = true;
+        startFlowerRain();
+      }
+    }
+  };
+
+  const handleStart = (point) => {
+    if (isCleared) return;
+    card.classList.add("is-scratching");
+    isDrawing = true;
+    lastPoint = null;
+    scratchTo(point);
+    checkScratchProgress();
+  };
+
+  const handleMove = (point) => {
+    if (!isDrawing || isCleared) return;
+    scratchTo(point);
+    checkScratchProgress();
+  };
+
+  const handleEnd = () => {
+    if (isCleared) return;
+    isDrawing = false;
+    lastPoint = null;
+    checkScratchProgress(true);
+  };
+
+  const handlePointerDown = (event) => {
+    event.preventDefault();
+    canvas.setPointerCapture(event.pointerId);
+    handleStart(getPoint(event.clientX, event.clientY));
+  };
+
+  const handlePointerMove = (event) => {
+    event.preventDefault();
+    handleMove(getPoint(event.clientX, event.clientY));
+  };
+
+  const handlePointerUp = () => {
+    handleEnd();
+  };
+
+  const handleMouseDown = (event) => {
+    handleStart(getPoint(event.clientX, event.clientY));
+  };
+
+  const handleMouseMove = (event) => {
+    handleMove(getPoint(event.clientX, event.clientY));
+  };
+
+  const handleMouseUp = () => {
+    handleEnd();
+  };
+
+  const handleTouchStart = (event) => {
+    if ("PointerEvent" in window) return;
+    event.preventDefault();
+    const touch = event.touches[0];
+    if (!touch) return;
+    handleStart(getPoint(touch.clientX, touch.clientY));
+  };
+
+  const handleTouchMove = (event) => {
+    if ("PointerEvent" in window) return;
+    event.preventDefault();
+    const touch = event.touches[0];
+    if (!touch) return;
+    handleMove(getPoint(touch.clientX, touch.clientY));
+  };
+
+  const handleTouchEnd = () => {
+    if ("PointerEvent" in window) return;
+    handleEnd();
+  };
+
+  const handleResize = () => {
+    if (isCleared) return;
+    resizeCanvas();
+  };
+
+  coverImage.addEventListener("load", drawCover);
+  coverImage.addEventListener("error", drawCover);
+  coverImage.src = "assets/scratch_layer.png";
+  resizeCanvas();
+
+  if ("PointerEvent" in window) {
+    canvas.addEventListener("pointerdown", handlePointerDown);
+    canvas.addEventListener("pointermove", handlePointerMove);
+    canvas.addEventListener("pointerup", handlePointerUp);
+    canvas.addEventListener("pointerleave", handlePointerUp);
+    canvas.addEventListener("pointercancel", handlePointerUp);
+  } else {
+    canvas.addEventListener("mousedown", handleMouseDown);
+    canvas.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
+  }
+
+  canvas.addEventListener("touchstart", handleTouchStart, { passive: false });
+  canvas.addEventListener("touchmove", handleTouchMove, { passive: false });
+  window.addEventListener("touchend", handleTouchEnd);
+  window.addEventListener("touchcancel", handleTouchEnd);
+  window.addEventListener("resize", handleResize);
+};
+
 musicToggle?.addEventListener("click", toggleMusic);
 updateCountdown();
 setInterval(updateCountdown, 1000);
 initReveal();
 initParallax();
 initAutoPlay();
+initScratchCard();
