@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Anudeep & Achuta Wedding Invitation</title>
+    <link rel="icon" href="assets/icon.jpg" type="image/jpeg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Sora:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <button class="music-toggle" id="music-toggle" type="button" aria-label="Play wedding music">
+      <span class="music-vinyl" aria-hidden="true"></span>
+      <span class="music-label" id="music-label">Play</span>
+    </button>
+    <audio id="wedding-audio" loop>
+      <source src="assets/indian_music.mp3" type="audio/mpeg" />
+    </audio>
+
+    <header class="hero" id="top">
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <p class="hero-tag">With joy in our hearts</p>
+        <div class="save-the-date" aria-hidden="true">
+          <span>Save</span>
+          <span>the</span>
+          <span>Date</span>
+        </div>
+        <a class="primary-cta" href="#rsvp">RSVP Now</a>
+      </div>
+      <div class="hero-monogram" aria-hidden="true">A & A</div>
+      <div class="hero-ribbon">
+        <h1 class="hero-names">Anudeep & Achuta</h1>
+        <p class="hero-date">Wed, 25 Feb 2026 · Visakhapatnam</p>
+      </div>
+    </header>
+
+    <main>
+      <section class="story" id="story">
+        <div class="section-title">
+          <p class="section-kicker">Our Journey</p>
+          <h2 class="section-heading">A day of traditions and togetherness</h2>
+        </div>
+        <div class="timeline">
+          <article class="timeline-item reveal">
+            <div class="timeline-dot"></div>
+            <div class="timeline-card">
+              <p class="timeline-label">Reception</p>
+              <h3>An evening of blessings</h3>
+              <p class="timeline-meta">Wed, 25 Feb 2026 · 7:00 PM</p>
+              <p class="timeline-venue">Darshini Hall, Hotel Daspalla, Visakhapatnam (Vizag)</p>
+              <a class="ghost-cta" href="https://maps.google.com/?q=Darshini+Hall+Hotel+Daspalla+Visakhapatnam" target="_blank" rel="noopener">See the route</a>
+            </div>
+          </article>
+          <article class="timeline-item reveal">
+            <div class="timeline-dot"></div>
+            <div class="timeline-card">
+              <p class="timeline-label">Wedding</p>
+              <h3>Muhurtham</h3>
+              <p class="timeline-meta">Wed, 25 Feb 2026 · 11:08 PM</p>
+              <p class="timeline-venue">Darshini Hall, Hotel Daspalla, Visakhapatnam (Vizag)</p>
+              <a class="ghost-cta" href="https://maps.google.com/?q=Darshini+Hall+Hotel+Daspalla+Visakhapatnam" target="_blank" rel="noopener">See the route</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="countdown" id="countdown">
+        <div class="section-title">
+          <p class="section-kicker">Countdown</p>
+          <h2 class="section-heading">Muhurtham begins in</h2>
+        </div>
+        <div class="countdown-grid" aria-live="polite">
+          <div class="countdown-card">
+            <span class="countdown-value" id="days">00</span>
+            <span class="countdown-label">Days</span>
+          </div>
+          <div class="countdown-card">
+            <span class="countdown-value" id="hours">00</span>
+            <span class="countdown-label">Hours</span>
+          </div>
+          <div class="countdown-card">
+            <span class="countdown-value" id="minutes">00</span>
+            <span class="countdown-label">Minutes</span>
+          </div>
+          <div class="countdown-card">
+            <span class="countdown-value" id="seconds">00</span>
+            <span class="countdown-label">Seconds</span>
+          </div>
+        </div>
+        <p class="countdown-note">Set your reminders and join us for the auspicious moment.</p>
+      </section>
+
+      <section class="rsvp" id="rsvp">
+        <div class="section-title">
+          <p class="section-kicker">RSVP</p>
+          <h2 class="section-heading">We would love to host you</h2>
+        </div>
+        <form
+          class="rsvp-form"
+          action="https://docs.google.com/forms/d/e/1FAIpQLSfBNdWb9gncKfc9zv0Iyy8gjekPHO28wEx6SmcT9nt_-ZlXWw/formResponse"
+          method="post"
+          target="_blank"
+        >
+          <label>
+            Full name
+            <input type="text" name="entry.258307941" placeholder="Your name" required />
+          </label>
+          <label>
+            Phone / Email
+            <input type="text" name="entry.213013687" placeholder="How can we reach you?" required />
+          </label>
+          <label>
+            Number of guests
+            <input type="number" name="entry.442962541" min="1" max="10" value="1" required />
+          </label>
+          <label>
+            Will you attend?
+            <select name="entry.480023696" required>
+              <option value="Yes, joyfully">Yes, joyfully</option>
+              <option value="Sadly, cannot make it">Sadly, cannot make it</option>
+            </select>
+          </label>
+          <fieldset class="rsvp-fieldset full-width">
+            <legend>Events you will attend</legend>
+            <label class="checkbox-option">
+              <input type="checkbox" name="entry.1044946526" value="Reception (Wed, 25 Feb 2026 — 7:00 PM)" />
+              <span>Reception (Wed, 25 Feb 2026 — 7:00 PM)</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" name="entry.1044946526" value="Wedding (Wed, 25 Feb 2026 — 11:08 PM)" />
+              <span>Wedding (Wed, 25 Feb 2026 — 11:08 PM)</span>
+            </label>
+          </fieldset>
+          <label class="full-width">
+            Notes
+            <textarea name="entry.731335577" rows="4" placeholder="Dietary preferences or blessings"></textarea>
+          </label>
+          <button class="primary-cta" type="submit">Send RSVP</button>
+        </form>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>With love, Anudeep & Achuta</p>
+      <p class="music-credit">
+        Music by
+        <a
+          href="https://pixabay.com/users/ritanyamusic-6596107/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=402995"
+          target="_blank"
+          rel="noopener"
+          >Ritanya Music</a
+        >
+        from
+        <a
+          href="https://pixabay.com/music//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=402995"
+          target="_blank"
+          rel="noopener"
+          >Pixabay</a
+        >
+      </p>
+      <a class="ghost-cta" href="#top">Back to top</a>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>

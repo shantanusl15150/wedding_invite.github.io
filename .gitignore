@@ -1,0 +1,7 @@
+# Ignore all hidden directories (e.g. .vscode/, .idea/)
+.*/
+
+# Ignore env files
+.env
+.env.*
+*.env
