@@ -21,7 +21,11 @@ html {
 body {
   font-family: "Sora", sans-serif;
   color: var(--ink);
-  background: var(--cream);
+  background-color: var(--cream);
+  background-image: url("assets/background_texture.png");
+  background-repeat: repeat;
+  background-size: 520px auto;
+  background-position: top center;
   min-height: 100vh;
   line-height: 1.7;
   position: relative;
@@ -34,10 +38,9 @@ body::before {
   inset: 0;
   background-image: radial-gradient(circle at 20% 20%, rgba(212, 175, 55, 0.15), transparent 50%),
     radial-gradient(circle at 80% 10%, rgba(107, 123, 58, 0.12), transparent 45%),
-    radial-gradient(circle at 10% 80%, rgba(107, 123, 58, 0.1), transparent 50%),
-    radial-gradient(circle, rgba(74, 4, 4, 0.04) 1px, transparent 1px);
-  background-size: 100% 100%, 100% 100%, 100% 100%, 18px 18px;
-  opacity: 0.6;
+    radial-gradient(circle at 10% 80%, rgba(107, 123, 58, 0.1), transparent 50%);
+  background-size: 100% 100%, 100% 100%, 100% 100%;
+  opacity: 0.5;
   pointer-events: none;
   z-index: 0;
 }
@@ -265,6 +268,21 @@ main {
   text-align: center;
 }
 
+.story-layout {
+  display: grid;
+  gap: 2.4rem;
+}
+
+.section-divider {
+  width: 100%;
+  height: clamp(90px, 14vw, 150px);
+  background-image: url("assets/section_divider.png");
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  margin: 0 auto 2rem;
+}
+
 .section-kicker {
   text-transform: uppercase;
   letter-spacing: 0.4em;
@@ -279,37 +297,15 @@ main {
 }
 
 .timeline {
-  position: relative;
   display: grid;
-  gap: 2.8rem;
-  padding-left: 1.8rem;
-}
-
-.timeline::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0.6rem;
-  width: 2px;
-  background: linear-gradient(180deg, rgba(212, 175, 55, 0.9), rgba(212, 175, 55, 0.1));
+  gap: 1.6rem;
+  padding-left: 0;
 }
 
 .timeline-item {
   position: relative;
   display: grid;
   gap: 1rem;
-}
-
-.timeline-dot {
-  position: absolute;
-  left: 0.12rem;
-  top: 1.2rem;
-  width: 0.9rem;
-  height: 0.9rem;
-  border-radius: 50%;
-  background: var(--gold);
-  box-shadow: 0 0 0 6px rgba(212, 175, 55, 0.2);
 }
 
 .timeline-card {
@@ -320,6 +316,7 @@ main {
   border: 1px solid rgba(212, 175, 55, 0.2);
   display: grid;
   gap: 0.7rem;
+  width: 100%;
 }
 
 .timeline-card h3 {
@@ -329,10 +326,17 @@ main {
 
 .timeline-label {
   text-transform: uppercase;
-  letter-spacing: 0.3em;
-  font-size: 0.68rem;
+  letter-spacing: 0.28em;
+  font-size: 0.62rem;
   font-weight: 600;
-  color: var(--olive);
+  color: var(--ink);
+  background: rgba(212, 175, 55, 0.16);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  border-radius: 999px;
+  padding: 0.35rem 0.9rem;
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
 }
 
 .timeline-meta,
@@ -380,6 +384,58 @@ main {
   margin-top: 1.6rem;
   font-size: 0.95rem;
   text-align: center;
+}
+
+.venue-panel {
+  background: rgba(255, 255, 255, 0.94);
+  border-radius: var(--radius);
+  padding: 2rem 1.7rem;
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(212, 175, 55, 0.18);
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+}
+
+.venue-kicker {
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  font-size: 0.62rem;
+  font-weight: 600;
+  color: var(--olive);
+}
+
+.venue-heading {
+  font-family: "Cormorant Garamond", serif;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 1.2rem;
+}
+
+.venue-address {
+  color: rgba(74, 4, 4, 0.72);
+  font-size: 0.95rem;
+}
+
+.venue-map {
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  box-shadow: 0 14px 28px rgba(74, 4, 4, 0.12);
+  background: #fff;
+  aspect-ratio: 4 / 3;
+  min-height: 220px;
+}
+
+.venue-map iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+.venue-cta {
+  justify-self: start;
 }
 
 .rsvp {
@@ -469,6 +525,13 @@ main {
   display: grid;
   gap: 1rem;
   color: rgba(74, 4, 4, 0.7);
+}
+
+.music-credit {
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  opacity: 0.55;
 }
 
 .music-toggle {
@@ -583,16 +646,15 @@ main {
     text-align: left;
   }
 
-  .timeline {
-    padding-left: 2.4rem;
-  }
-
-  .timeline-card {
-    max-width: 520px;
-  }
-
   .rsvp-form {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 960px) {
+  .story-layout {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    align-items: start;
   }
 }
 
