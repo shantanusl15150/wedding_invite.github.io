@@ -660,9 +660,11 @@ main {
 
 @media (max-width: 600px) {
   .hero-content {
-    right: 5%;
-    top: 34%;
-    width: min(72vw, 300px);
+    right: 6%;
+    top: clamp(50%, 56vw, 62%);
+    bottom: auto;
+    transform: translateY(-50%);
+    width: min(78vw, 320px);
     gap: 1.1rem;
   }
 
@@ -693,9 +695,9 @@ main {
 
 @media (max-width: 380px) {
   .hero-content {
-    right: 4%;
-    top: 32%;
-    width: min(74vw, 260px);
+    right: 5%;
+    top: clamp(52%, 62vw, 64%);
+    width: min(82vw, 280px);
   }
 
   .save-the-date {
