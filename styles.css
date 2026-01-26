@@ -362,12 +362,12 @@ main {
   align-items: center;
   justify-content: center;
   margin: 0 auto;
-  padding: 0.4rem 1.3rem;
+  padding: clamp(0.3rem, 1vw, 0.45rem) clamp(0.8rem, 2.6vw, 1.3rem);
   border-radius: 999px;
   border: 1px solid rgba(212, 175, 55, 0.55);
   background: rgba(253, 251, 247, 0.9);
-  font-size: 1.05rem;
-  letter-spacing: 0.22em;
+  font-size: clamp(0.78rem, 2vw + 0.4rem, 1.1rem);
+  letter-spacing: clamp(0.12em, 0.8vw, 0.22em);
   text-transform: uppercase;
   font-weight: 600;
   color: rgba(74, 4, 4, 0.7);
@@ -382,8 +382,8 @@ main {
 
 .scratch-label {
   font-family: "Cormorant Garamond", serif;
-  font-size: clamp(1.15rem, 3.4vw, 1.5rem);
-  letter-spacing: 0.12em;
+  font-size: clamp(1rem, 2.8vw, 1.55rem);
+  letter-spacing: clamp(0.08em, 0.5vw, 0.14em);
   text-transform: uppercase;
   font-weight: 600;
   color: rgba(74, 4, 4, 0.82);
@@ -391,8 +391,8 @@ main {
 
 .scratch-time {
   font-family: "Sora", sans-serif;
-  font-size: clamp(1.8rem, 5.2vw, 2.6rem);
-  letter-spacing: 0.05em;
+  font-size: clamp(1.5rem, 4.8vw, 2.7rem);
+  letter-spacing: clamp(0.02em, 0.3vw, 0.06em);
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   text-transform: uppercase;
@@ -575,6 +575,7 @@ main {
   padding: 3rem 1.5rem;
   box-shadow: var(--shadow);
   border: 1px solid rgba(212, 175, 55, 0.15);
+  position: relative;
 }
 
 .rsvp-form {
@@ -648,6 +649,15 @@ main {
 
 .rsvp-form .full-width {
   grid-column: 1 / -1;
+}
+
+.rsvp-frame {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  border: 0;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .footer {
@@ -833,20 +843,6 @@ main {
 
   .scratch-title {
     letter-spacing: 0.12em;
-  }
-
-  .scratch-date {
-    font-size: 0.92rem;
-    letter-spacing: 0.18em;
-  }
-
-  .scratch-label {
-    letter-spacing: 0.1em;
-    font-size: 1.02rem;
-  }
-
-  .scratch-time {
-    letter-spacing: 0.04em;
   }
 }
 

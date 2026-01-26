@@ -254,6 +254,11 @@ const initScratchCard = () => {
     if (rainInterval) return;
 
     const marigoldPalette = ["#f2a900", "#f5b031", "#e18a00", "#d77b00"];
+    const getPetalScalar = () => {
+      const minDim = Math.min(window.innerWidth || 0, window.innerHeight || 0);
+      const scaled = (minDim / 360) * 1.6;
+      return Math.min(2.6, Math.max(1.2, scaled));
+    };
     const petalShape =
       typeof window.confetti.shapeFromPath === "function"
         ? window.confetti.shapeFromPath({
@@ -263,6 +268,7 @@ const initScratchCard = () => {
 
     const emitPetals = () => {
       const bursts = 7;
+      const petalScalar = getPetalScalar();
       for (let i = 0; i < bursts; i += 1) {
         window.confetti({
           particleCount: 18,
@@ -273,7 +279,7 @@ const initScratchCard = () => {
           ticks: 720,
           colors: marigoldPalette,
           shapes: [petalShape],
-          scalar: 2.4,
+          scalar: petalScalar,
           origin: { x: Math.random(), y: -0.1 },
         });
       }
