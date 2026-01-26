@@ -111,6 +111,7 @@ const attemptAutoPlay = async () => {
 
 const initAutoPlay = () => {
   attemptAutoPlay();
+  window.addEventListener("load", attemptAutoPlay, { once: true });
 
   const unlockAudio = () => {
     attemptAutoPlay();
@@ -129,6 +130,10 @@ const initScratchCard = () => {
   const canvas = document.getElementById("scratch-canvas");
   if (!card || !canvas) return;
 
+  const reveal = card.querySelector(".scratch-reveal");
+  const text = card.querySelector(".scratch-text");
+  let textScale = 1;
+  let textScaleRaf = null;
   const context = canvas.getContext("2d");
   if (!context) return;
 
@@ -145,6 +150,51 @@ const initScratchCard = () => {
   const clearThreshold = 0.4;
   let scratchedArea = 0;
   let confettiFired = false;
+
+  const fitScratchCard = () => {
+    if (!reveal || !text) return;
+    const prevHeight = card.style.height;
+    if (prevHeight) {
+      card.style.height = "";
+    }
+    const baseHeight = card.getBoundingClientRect().height;
+    const baseWidth = card.getBoundingClientRect().width;
+    if (prevHeight) {
+      card.style.height = prevHeight;
+    }
+    if (!baseHeight || !baseWidth) return;
+
+    const contentHeight = text.scrollHeight;
+    const contentWidth = text.scrollWidth;
+    if (!contentHeight || !contentWidth) return;
+
+    let scale = 1;
+    if (contentWidth > baseWidth) {
+      scale = Math.min(scale, baseWidth / contentWidth);
+    }
+    textScale = Math.max(0.01, Math.min(1, scale));
+    text.style.setProperty("--scratch-scale", textScale.toFixed(3));
+
+    const scaledHeight = contentHeight * textScale;
+    const buffer = 12;
+    const desiredHeight = Math.max(baseHeight, scaledHeight + buffer);
+    if (desiredHeight > baseHeight + 1) {
+      card.style.height = `${Math.ceil(desiredHeight)}px`;
+    } else {
+      card.style.height = "";
+    }
+  };
+
+  const scheduleScratchLayout = () => {
+    if (textScaleRaf) return;
+    textScaleRaf = window.requestAnimationFrame(() => {
+      textScaleRaf = null;
+      fitScratchCard();
+      if (!isCleared) {
+        resizeCanvas();
+      }
+    });
+  };
 
   const drawCover = () => {
     context.globalCompositeOperation = "source-over";
@@ -381,14 +431,21 @@ const initScratchCard = () => {
   };
 
   const handleResize = () => {
-    if (isCleared) return;
-    resizeCanvas();
+    scheduleScratchLayout();
   };
 
   coverImage.addEventListener("load", drawCover);
   coverImage.addEventListener("error", drawCover);
   coverImage.src = "assets/scratch_layer.png";
-  resizeCanvas();
+  scheduleScratchLayout();
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(scheduleScratchLayout);
+  }
+  window.addEventListener("load", scheduleScratchLayout);
+  if ("ResizeObserver" in window) {
+    const observer = new ResizeObserver(scheduleScratchLayout);
+    observer.observe(card);
+  }
 
   if ("PointerEvent" in window) {
     canvas.addEventListener("pointerdown", handlePointerDown);

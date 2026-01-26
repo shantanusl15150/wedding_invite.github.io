@@ -347,6 +347,7 @@ main {
 }
 
 .scratch-text {
+  --scratch-scale: 1;
   position: relative;
   z-index: 1;
   display: grid;
@@ -355,6 +356,8 @@ main {
   text-align: center;
   opacity: 0;
   transition: opacity 0.3s ease;
+  transform: scale(var(--scratch-scale));
+  transform-origin: center;
 }
 
 .scratch-date {
