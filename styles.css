@@ -16,6 +16,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
@@ -244,9 +245,10 @@ h3 {
 }
 
 main {
+  --page-gutter: 1.5rem;
   display: grid;
   gap: 5rem;
-  padding: 0 1.5rem 6rem;
+  padding: 0 var(--page-gutter) 6rem;
 }
 
 .section-title {
@@ -266,14 +268,15 @@ main {
 }
 
 .section-divider {
-  width: 100vw;
+  width: calc(100% + (2 * var(--page-gutter)));
   height: clamp(90px, 14vw, 150px);
   background-image: url("assets/section_divider.png");
   background-size: auto 100%;
   background-position: left top;
   background-repeat: repeat-x;
   margin: 0 0 2rem;
-  margin-left: calc(50% - 50vw);
+  margin-left: calc(-1 * var(--page-gutter));
+  margin-right: calc(-1 * var(--page-gutter));
 }
 
 .section-kicker {
@@ -787,7 +790,8 @@ main {
   }
 
   main {
-    padding: 0 10vw 6rem;
+    --page-gutter: 10vw;
+    padding: 0 var(--page-gutter) 6rem;
   }
 
   .section-title {
