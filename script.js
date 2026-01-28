@@ -1,4 +1,4 @@
-const targetDate = new Date("2026-02-25T23:08:00+05:30");
+const targetDate = new Date("2026-02-12T23:30:00+05:30");
 
 const timeEls = {
   days: document.getElementById("days"),
@@ -75,6 +75,7 @@ const initParallax = () => {
 
   updatePosition();
 };
+
 
 const toggleMusic = async () => {
   if (!audio) return;
